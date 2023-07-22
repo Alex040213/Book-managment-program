@@ -33,25 +33,29 @@ public class DriverConnectivity {
 
 
     }
-    public void getBook(String quer) throws SQLException {
+    public String  getBook(int broj) throws SQLException {
             Statement st = con.createStatement();
-            String query = quer;
+            String query = "select * from knigi where inventarenBroj = "+broj+"";
             ResultSet rs = st.executeQuery(query);
-            String userData ="";
-                System.out.println("IME | AVTOR | IZDAVATEL | GODINA NA IZDAVANJE | CENA");
-                int count=1;
-                while(rs.next()){
-                    userData = count+" | "+rs.getString(2) +" | "+rs.getString(3)+" | "+ rs.getString(4)+" | "+rs.getString(5) +" | "+rs.getInt(6);
-                    System.out.println(userData);
-                    count++;
-                }
-        System.out.println();
+            rs.next();
+            String ime = rs.getString("Ime");
+            String avtor = rs.getString("Avtor");
+            int invBroj = rs.getInt("inventarenBroj");
+            return "Izbrana e knigata " +ime+" od "+avtor+" so broj:"+invBroj;
     }
     public void insertBook(Books book) throws SQLException{
         String query = "insert into knigi values ("+book.getInventarenBroj()+",'"+book.getIme()+"','"+book.getAvtor()+"','"+book.getIzdavatel()+"','"+book.getGodinaNaIzdavanje()+"',"+book.getCena()+");";
         PreparedStatement st = con.prepareStatement(query);
         int count = st.executeUpdate(query);
         System.out.println(count+ " row/s affected");
+    }
+    public void deleteBook(int broj)throws SQLException{
+        Statement st = con.createStatement();
+        String query = "delete from knigi where inventarenBroj = "+broj+";";
+        int count  = st.executeUpdate(query);
+        if(count==0){
+            throw new SQLException();
+        }
     }
 
 }

@@ -51,37 +51,5 @@ public class Main {
         return book;
 
     }
-    public static Books prebaraj(DriverConnectivity dc) throws SQLException{
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Po shto sakate da pobarate kniga?");
-        System.out.println("1.Ime");
-        System.out.println("2.Avtor");
-        System.out.println("3.Cena");
-        System.out.println("4.Izdavatel");
-        switch (sc.nextLine()){
-            case "1":
-                System.out.println("Vnesete ime");
-                dc.getBook("select * from knigi where Ime='"+sc.nextLine()+"';");
-                break;
-            case "2":
-                System.out.println("Vnesete Avtor");
-                dc.getBook("select * from knigi where Avtor='"+sc.nextLine()+"';");
 
-                break;
-            case "3":
-                System.out.println("Vnesete cena");
-                dc.getBook("select * from knigi where Cena="+sc.nextLine()+";");
-
-                break;
-            case "4":
-                System.out.println("Vnesete izdavatel");
-                dc.getBook("select * from knigi where Izdavatel='"+sc.nextLine()+"';");
-                break;
-            default:
-                System.out.println("Nevaliden vnes probajte pak:");
-                prebaraj(dc);
-                break;
-        }
-        return new Books();
-    }
 }

@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class MyFrame extends JFrame implements ActionListener {
+
+    JButton izbrishiKniga;
     JPanel panel = new JPanel();
     JScrollPane sp;
     JTable j;
@@ -31,7 +33,13 @@ public class MyFrame extends JFrame implements ActionListener {
         fieldCena = new JTextField();
         fieldInvBroj = new JTextField();
 
-        btn.setBounds(450,140,100,30);
+        izbrishiKniga = new JButton("Izbrishi kniga");
+        izbrishiKniga.setBounds(500,140,130,30);
+        izbrishiKniga.setFocusable(false);
+        izbrishiKniga.addActionListener(this);
+        panel.add(izbrishiKniga);
+
+        btn.setBounds(350,140,130,30);
         btn.setFocusable(false);
         btn.addActionListener(this);
         panel.add(btn);
@@ -84,9 +92,11 @@ public class MyFrame extends JFrame implements ActionListener {
         panel.setLayout(null);
         panel.setSize(this.getSize());
         this.add(panel);
-        this.setVisible(true);
         this.setSize(700,500);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+
     }
 
     @Override
@@ -108,8 +118,29 @@ public class MyFrame extends JFrame implements ActionListener {
                     fieldInvBroj.setText("");
                 }
             }catch (SQLException err){
-                System.out.println(err.getStackTrace());
+                JOptionPane.showMessageDialog(this,"PROBAVTE DA VNESITE VEKJE POSTOECHKA KNIGA","ERROR",JOptionPane.INFORMATION_MESSAGE);
             }
+
+        }
+        if(e.getSource().equals(izbrishiKniga)){
+            try {
+                int broj = Integer.parseInt(JOptionPane.showInputDialog(this,"Vnesi inventaren broj na knigata",null));
+                String message = dc.getBook(broj);
+                int result = JOptionPane.showConfirmDialog(null, "DOKOLKU PRITISNETE YES NA PROZORECOT KNIGATA KJE BIDE IZBRISHANA OD BAZATA NA PODATOCI");
+                if(result ==JOptionPane.YES_OPTION){
+                    JOptionPane.showMessageDialog(this,message,"USPESHNA OPERACIJA",JOptionPane.INFORMATION_MESSAGE);
+                    dc.deleteBook(broj);
+                    tableModel.setDataVector(dc.getBooks(), columnNames);
+                    j.repaint();
+                }
+
+
+            }catch(SQLException s){
+                System.out.println(s);
+                JOptionPane.showMessageDialog(this,"NEPOSTOECHKA KNIGA","ERROR",JOptionPane.INFORMATION_MESSAGE);
+            }
+
+
 
         }
     }
