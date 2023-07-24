@@ -1,8 +1,11 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MyFrame extends JFrame implements ActionListener {
@@ -17,8 +20,11 @@ public class MyFrame extends JFrame implements ActionListener {
     String[] columnNames = {"Inventaren Broj", "Ime","Avtor","Izdavatel","Godina na izdavanje","Cena"};
     DefaultTableModel tableModel;
     DriverConnectivity dc;
-    public MyFrame(DriverConnectivity dc)throws SQLException {
-        this.dc= dc;
+    Connection con;
+    public MyFrame() throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+         con = DriverManager.getConnection("jdbc:mysql://localhost:3306/knigi","myuser","19304045");
+        this.dc= new DriverConnectivity(con);
         labelIme = new JLabel("Ime");
         labelAvtor = new JLabel("Avtor");
         labelGodina = new JLabel("Godina");
@@ -70,11 +76,11 @@ public class MyFrame extends JFrame implements ActionListener {
         };
         j.getTableHeader().setReorderingAllowed(false);
         j.setAutoResizeMode(5);
-        j.setBounds(100,190,600,200);;
+        j.setBounds(25,190,650,200);;
         j.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         sp = new JScrollPane(j);
         sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        sp.setBounds(100,190,500,200);
+        sp.setBounds(25,190,650,200);
         panel.add(sp);
         panel.add(fieldIme);
         panel.add(fieldAvtor);
@@ -96,7 +102,6 @@ public class MyFrame extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-
     }
 
     @Override

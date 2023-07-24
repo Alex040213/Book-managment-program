@@ -1,7 +1,13 @@
 import java.awt.print.Book;
-import java.sql.*;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -24,9 +30,10 @@ public class Main {
 //                cond =false;
 //            }
 //        }
-//        con.close();
-
-        MyFrame frame = new MyFrame(dc);
+//
+        Registration reg = new Registration();
+        Login log = new Login();
+        con.close();
     }
 
     public static Books kreirajKniga(){
